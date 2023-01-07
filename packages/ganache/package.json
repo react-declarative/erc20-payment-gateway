@@ -1,0 +1,15 @@
+{
+  "name": "ganache",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "main": "run-ganache.js",
+  "scripts": {
+    "start": "node ./run-ganache.js"
+  },
+  "dependencies": {
+    "ganache-cli": "6.12.2",
+    "glob": "8.0.3",
+    "rimraf": "3.0.2"
+  }
+}
