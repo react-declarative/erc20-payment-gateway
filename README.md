@@ -2,6 +2,14 @@
 
 > A payment gateway for any `IERC20` tokens (USDT) with testbed on top of [TestERC20](https://stackoverflow.com/questions/75043524/minimal-erc20-contract-for-testing/75043525#75043525) token
 
+## Usage
+
+1. Start [ganache](https://trufflesuite.com/ganache/) instance by running `npm start`
+2. Deploy [TestERC20.sol](./packages/client/src/contract/TestERC20.sol), (PaymentGatewayContract.sol)[./packages/client/src/contract/PaymentGatewayContract.sol] by using [Remix IDE](https://remix-project.org/)
+3. Mint some tokens in `Remix` by calling `mint` method
+4. Update `PaymentGatewayContract` address in [params.ts](./packages/client/src/config/params.ts)
+5. Run this DApp by running `npm start` in [client](./packages/client) folder. Send some tokens and see admin menu by typing secret cheat-code `133337`
+
 ## Contract source code
 
 ```solidity
