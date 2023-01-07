@@ -46,7 +46,7 @@ contract TestERC20 {
     }
 
     function transferFrom(address src, address dst, uint256 wad) public returns (bool) {
-        require(balances[src] >= wad, "nsufficient-balance");
+        require(balances[src] >= wad, "insufficient-balance");
         if (src != msg.sender && allowances[src][msg.sender] != type(uint256).max) {
             require(allowances[src][msg.sender] >= wad, "insufficient-allowances");
             allowances[src][msg.sender] = Math.safeSub(allowances[src][msg.sender], wad);

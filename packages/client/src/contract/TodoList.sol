@@ -2,90 +2,72 @@
 
 pragma solidity ^0.8.7;
 
-library Math {
-    function safeAdd(uint256 x, uint256 y) internal pure returns (uint256) {
-        uint256 z = x + y;
-        require(z >= x, "math-add-overflow");
-        return z;
-    }
-    function safeSub(uint256 x, uint256 y) internal pure returns (uint256) {
-        uint256 z = x - y;
-        require(z <= x, "math-sub-underflow");
-        return z;
-    }
+interface IERC20 {
+    event Transfer(address indexed from, address indexed to, uint256 value);
+    event Approval(address indexed owner, address indexed spender, uint256 value);
+    function totalSupply() external view returns (uint256);
+    function balanceOf(address account) external view returns (uint256);
+    function transfer(address to, uint256 amount) external returns (bool);
+    function allowance(address owner, address spender) external view returns (uint256);
+    function approve(address spender, uint256 amount) external returns (bool);
+    function transferFrom(address from, address to, uint256 amount) external returns (bool);
 }
 
-contract TestERC20 {
+contract TodoList {
 
-    uint256 public constant decimals = 18;
-    string public name;
-    string public symbol;
-    uint256 public totalSupply;
+    struct Todo {
+        uint id;
+        string content;
+        address owner;
+        bool isDeleted;
+    }
 
-    mapping (address => uint256) public balances;
-    mapping (address => mapping (address => uint256)) private allowances;
+    uint256 public pendingTodoId;
 
-    event Approval(address indexed src, address indexed usr, uint256 wad);
-    event Transfer(address indexed src, address indexed dst, uint256 wad);
+    mapping (uint256 => Todo) public todoMap;
 
-    function getChainId() public view returns(uint256) {
-        uint256 chainId;
-        assembly {
-            chainId := chainid()
+    function todosOfOwner() public view returns (uint256[] memory) {
+        uint256 todosLength = pendingTodoId;
+        uint256[] memory ownedTodoDirtyIds = new uint256[](todosLength);
+        uint256 ownedTodoIdx = 0;
+        for (uint id = 0; id != todosLength; id++) {
+            Todo memory todo = todoMap[id];
+            if (todo.owner == msg.sender && !todo.isDeleted) {
+                ownedTodoDirtyIds[ownedTodoIdx] = todo.id;
+                ownedTodoIdx++;
+            }
         }
-        return chainId;
-    }
-
-    constructor(string memory _symbol, string memory _name) {
-        symbol = _symbol;
-        name = _name;
-    }
-
-    function transfer(address dst, uint256 wad) external returns (bool) {
-        return transferFrom(msg.sender, dst, wad);
-    }
-
-    function transferFrom(address src, address dst, uint256 wad) public returns (bool) {
-        require(balances[src] >= wad, "insufficient-balance");
-        if (src != msg.sender && allowances[src][msg.sender] != type(uint256).max) {
-            require(allowances[src][msg.sender] >= wad, "insufficient-allowances");
-            allowances[src][msg.sender] = Math.safeSub(allowances[src][msg.sender], wad);
+        uint256[] memory ownedTodoIds = new uint256[](ownedTodoIdx);
+        for (uint id = 0; id != ownedTodoIdx; id++) {
+            ownedTodoIds[id] = ownedTodoDirtyIds[id];
         }
-        balances[src] = Math.safeSub(balances[src], wad);
-        balances[dst] = Math.safeAdd(balances[dst], wad);
-        emit Transfer(src, dst, wad);
-        return true;
+        return ownedTodoIds;
     }
 
-    function mint(address usr, uint256 wad) public {
-        balances[usr] = Math.safeAdd(balances[usr], wad);
-        totalSupply = Math.safeAdd(totalSupply, wad);
-        emit Transfer(address(0), usr, wad);
+    function addTodo(string memory _content) public {
+        uint256 currentId = pendingTodoId++;
+        Todo memory todo;
+        todo.id = currentId;
+        todo.content = _content;
+        todo.owner = msg.sender;
+        todoMap[currentId] = todo;
+        emit update();
     }
 
-    function burn(address usr, uint256 wad) public {
-        require(balances[usr] >= wad, "insufficient-balance");
-        if (usr != msg.sender && allowances[usr][msg.sender] != type(uint256).max) {
-            require(allowances[usr][msg.sender] >= wad, "insufficient-allowances");
-            allowances[usr][msg.sender] = Math.safeSub(allowances[usr][msg.sender], wad);
-        }
-        balances[usr] = Math.safeSub(balances[usr], wad);
-        totalSupply    = Math.safeSub(totalSupply, wad);
-        emit Transfer(usr, address(0), wad);
+    function removeTodo(uint256 _id) public {
+        Todo storage todo = todoMap[_id];
+        require(todo.owner == msg.sender, 'You are not the owner of that todo');
+        todo.isDeleted = true;
+        emit update();
     }
 
-    function approve(address usr, uint256 wad) external returns (bool) {
-        allowances[msg.sender][usr] = wad;
-        emit Approval(msg.sender, usr, wad);
-        return true;
+    function setTodoText(uint256 _id, string memory _content) public {
+        Todo storage todo = todoMap[_id];
+        require(todo.owner == msg.sender, 'You are not the owner of that todo');
+        todo.content = _content;
+        emit update();
     }
 
-    function allowance(address owner, address spender) public view returns (uint256) {
-        return allowances[owner][spender];
-    }
-
-    function balanceOf(address account) public view returns (uint256) {
-        return balances[account];
-    }
+    event update();
 
 }
