@@ -49,7 +49,7 @@ const wrappedApp = (
         <ThemeProvider theme={THEME_DARK}>
           <ModalProvider>
             <AlertProvider>
-              <SecretView onCode={handleCode}>
+              <SecretView onCode={handleCode} sx={{ zIndex: 9999 }}>
                 <App />
               </SecretView>
             </AlertProvider>

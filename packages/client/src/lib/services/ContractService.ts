@@ -39,7 +39,6 @@ export class ContractService {
     getDeployBlock = async () => Number(await this._instance.deployBlock());
 
     sendUSDT = async (_amount: number, _data: string) => {
-        debugger
         const result = await this._instance.sendUSDT(String(_amount), toBytes32(_data));
         const rc = await result.wait();
         const event = rc.events.find((event: any) => event.event === 'Transfer');
