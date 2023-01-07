@@ -1,5 +1,5 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { inject, singleshot, Subject } from "react-declarative";
+import { inject, singleshot, Subject, toBytes32, fromBytes32 } from "react-declarative";
 
 import {
     ethers,
@@ -20,7 +20,11 @@ export class ContractService {
 
     private readonly ethersService = inject<EthersService>(TYPES.ethersService);
 
-    public readonly updateSubject = new Subject<void>();
+    public readonly transferSubject = new Subject<{
+        sender: string;
+        amount: number;
+        data: string;
+    }>();
 
     private _instance: IContract = null as never;
 
@@ -32,33 +36,41 @@ export class ContractService {
         makeAutoObservable(this);
     };
 
-    getPendingTodoId = async () => Number(await this._instance.pendingTodoId());
+    getDeployBlock = async () => Number(await this._instance.deployBlock());
 
-    getTodoById = async (id: number) => {
-        const todoItem = await this._instance.todoMap(id);
+    sendUSDT = async (_amount: number, _data: string) => {
+        const result = await this._instance.sendUSDT(_amount, toBytes32(_data));
+        const rc = await result.wait();
+        const event = rc.events.find((event: any) => event.event === 'Transfer');
+        const [sender, amount, data] = event.args;
         return {
-            id: Number(todoItem.id),
-            content: String(todoItem.content),
-            owner: String(todoItem.owner),
-            isDeleted: Boolean(todoItem.isDeleted),
+            sender,
+            amount: Number(amount),
+            data: fromBytes32(data),
         };
     };
 
-    addTodo = async (content: string) => await this._instance.addTodo(content);
-
-    setTodoText = async (id: number, content: string) => await this._instance.setTodoText(id, content);
-
-    removeTodoById = async (id: number) => await this._instance.removeTodo(id);
-
-    todosOfOwner = async () => {
-        const todoIds: number[] = (await this._instance.todosOfOwner()).map((bigint: any) => Number(bigint));
-        return await Promise.all(todoIds.map((id) => this.getTodoById(id)));
-    };
-
-    todosOfEveryone = async () => {
-        const pendingId = await this.getPendingTodoId();
-        const totalIds = [...Array(pendingId).keys()];
-        return await Promise.all(totalIds.map((id) => this.getTodoById(id)));
+    getTransferList = async () => {
+        const eventSignature = 'Transfer(address indexed, uint256, bytes32)';
+        const eventTopic = ethers.utils.id(eventSignature);
+        const deployBlock = await this.getDeployBlock();
+        const currentBlock = await this.ethersService.provider.getBlockNumber();
+        const parser = new ethers.utils.Interface(CC_CONTRACT_ABI);
+        const rawLogs = await this.ethersService.provider.getLogs({
+            address: CC_CONTRACT_ADDRESS,
+            topics: [eventTopic],
+            fromBlock: deployBlock, 
+            toBlock: currentBlock,
+        });
+        return rawLogs.map((log) => {
+            const parsedLog = parser.parseLog(log);
+            const [sender, amount, data] = parsedLog.args;
+            return {
+                sender,
+                amount: Number(amount),
+                data: fromBytes32(data),
+            };
+        });
     };
 
     prefetch = singleshot(async () => {
@@ -74,7 +86,15 @@ export class ContractService {
                 this.ethersService.getSigner(),
             ) as IContract;
             runInAction(() => this._instance = instance);
-            instance.on('update', this.updateSubject.next);
+            this.ethersService.provider.once("block", () => {
+                instance.on('Transfer', (sender: string, amount: BigInt, data: string) => {
+                    this.transferSubject.next({
+                        sender,
+                        amount: Number(amount),
+                        data: fromBytes32(data),
+                    });
+                });
+            });
         } catch (e) {
             console.warn('ContractService prefetch failed', e);
         }
