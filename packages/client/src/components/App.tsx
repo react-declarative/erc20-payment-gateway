@@ -1,13 +1,14 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 
-import { Switch, Scaffold } from 'react-declarative';
+import { prefetch, Switch, unload } from 'react-declarative';
 
 import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
 import CircularProgress from '@mui/material/CircularProgress';
+import CssBaseline from '@mui/material/CssBaseline';
 
 import routes from '../config/routes';
-import sidemenu from '../config/sidemenu';
 
 import ioc from '../lib/ioc';
 
@@ -37,22 +38,28 @@ const Fragment = () => <></>;
 export const App = observer(() => {
   return (
     <>
-      <Scaffold
-        dense
-        loaderLine={ioc.layoutService.hasAppbarLoader}
-        options={sidemenu}
-        Loader={Loader}
-        onOptionClick={(name) => ioc.routerService.push(name)}
-      >
+      <CssBaseline />
+      {ioc.layoutService.hasAppbarLoader && (
+        <Box
+          sx={{
+            marginBottom: -4,
+          }}
+        >
+          <LinearProgress color="secondary" />
+        </Box>
+      )}
+      <Box p={1}>
         <Switch
           Loader={Fragment}
           history={ioc.routerService}
           items={routes}
           onLoadStart={() => ioc.layoutService.setAppbarLoader(true)}
           onLoadEnd={() => ioc.layoutService.setAppbarLoader(false)}
+          onInit={async () => await prefetch(true)}
+          onDispose={async () => await unload(true)}
           throwError
         />
-      </Scaffold>
+      </Box>
       {ioc.layoutService.hasModalLoader && (
         <Loader />
       )}

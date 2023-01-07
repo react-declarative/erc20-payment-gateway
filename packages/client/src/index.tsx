@@ -8,6 +8,7 @@ import createCache from "@emotion/cache";
 
 import { ModalProvider } from "react-declarative";
 import { ErrorBoundary } from "react-declarative";
+import { SecretView } from "react-declarative";
 
 import "./polyfills";
 
@@ -35,6 +36,12 @@ const handleGlobalError = (error: any) => {
   ioc.routerService.push('/error-page');
 };
 
+const handleCode = (code: number) => {
+  if (code === 133337) {
+    ioc.routerService.push('/admin-page');
+  }
+};
+
 const wrappedApp = (
   <ErrorBoundary history={ioc.routerService} onError={handleGlobalError}>
     <CacheProvider value={muiCache}>
@@ -42,7 +49,9 @@ const wrappedApp = (
         <ThemeProvider theme={THEME_DARK}>
           <ModalProvider>
             <AlertProvider>
-              <App />
+              <SecretView onCode={handleCode}>
+                <App />
+              </SecretView>
             </AlertProvider>
           </ModalProvider>
         </ThemeProvider>

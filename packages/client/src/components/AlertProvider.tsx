@@ -26,6 +26,7 @@ export const AlertProvider = observer(({
                     autoHideDuration={AUTO_HIDE_DURATION}
                     onClose={ioc.alertService.hideCurrent}
                     message={current.message}
+                    sx={{ zIndex: 99999 }}
                 />
             )}
             {children}
