@@ -42,7 +42,7 @@ export const App = observer(() => {
       {ioc.layoutService.hasAppbarLoader && (
         <Box
           sx={{
-            marginBottom: -4,
+            marginBottom: '-4px',
           }}
         >
           <LinearProgress color="secondary" />

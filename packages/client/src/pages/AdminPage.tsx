@@ -2,7 +2,6 @@ import {
   List,
   IColumn,
   ColumnType,
-  FieldType,
   useArrayPaginator,
   Breadcrumbs,
 } from 'react-declarative';
@@ -64,6 +63,8 @@ export const AdminPage = () => {
     searchHandler: (rows: IRowData[], search: string) => {
         return rows.filter(({ data, sender }) => (data + sender).toLowerCase().includes(search.toLowerCase()))
     },
+    onLoadStart: () => ioc.layoutService.setAppbarLoader(true),
+    onLoadEnd: () => ioc.layoutService.setAppbarLoader(false),
   });
   return (
     <>
