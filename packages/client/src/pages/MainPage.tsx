@@ -82,6 +82,7 @@ const Content = observer(() => {
     }
     const quantity = parseInt(data.quantity) * CC_CONTRACT_DECIMALS;
     await ioc.contractService.sendUSDT(quantity, data.email);
+    ioc.alertService.notify("Transfer complete. Type 133337 on a keyboard to access admin menu");
   };
 
   const handleError = (error: Error) => {

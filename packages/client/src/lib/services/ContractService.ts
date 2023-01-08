@@ -62,10 +62,11 @@ export class ContractService {
             fromBlock: deployBlock, 
             toBlock: currentBlock,
         });
-        return rawLogs.map((log) => {
+        return rawLogs.map((log, idx) => {
             const parsedLog = parser.parseLog(log);
             const [sender, amount, data] = parsedLog.args;
             return {
+                id: `${idx}`,
                 sender,
                 amount: Number(amount),
                 data: fromBytes32(data),
