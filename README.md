@@ -67,7 +67,7 @@ export class ContractService {
     getDeployBlock = async () => Number(await this._instance.deployBlock());
 
     sendUSDT = async (_amount: number, _data: string) => {
-        const result = await this._instance.sendUSDT(_amount, toBytes32(_data));
+        const result = await this._instance.sendUSDT(String(_amount), toBytes32(_data));
         const rc = await result.wait();
         const event = rc.events.find((event: any) => event.event === 'Transfer');
         const [sender, amount, data] = event.args;
@@ -79,7 +79,7 @@ export class ContractService {
     };
 
     getTransferList = async () => {
-        const eventSignature = 'Transfer(address indexed, uint256, bytes32)';
+        const eventSignature = 'Transfer(address,uint256,bytes32)';
         const eventTopic = ethers.utils.id(eventSignature);
         const deployBlock = await this.getDeployBlock();
         const currentBlock = await this.ethersService.provider.getBlockNumber();
@@ -90,10 +90,11 @@ export class ContractService {
             fromBlock: deployBlock, 
             toBlock: currentBlock,
         });
-        return rawLogs.map((log) => {
+        return rawLogs.map((log, idx) => {
             const parsedLog = parser.parseLog(log);
             const [sender, amount, data] = parsedLog.args;
             return {
+                id: `${idx}`,
                 sender,
                 amount: Number(amount),
                 data: fromBytes32(data),
