@@ -3,14 +3,14 @@ import CC_ERC20_ABI from "../contract/erc20.abi.json";
 
 import ADDRESSES from "../contract/instances.deployed.json";
 
-const CC_APP_NAME = 'HashApp';
 const CC_ERC20_ADDRESS = ADDRESSES.erc20;
 const CC_PAYMENT_GATEWAY_ADDRESS = ADDRESSES.gateway;
+const CC_LESSON_PRICE = 25;
 
 export {
-  CC_APP_NAME,
   CC_ERC20_ADDRESS,
   CC_PAYMENT_GATEWAY_ADDRESS,
+  CC_LESSON_PRICE,
   CC_ERC20_ABI,
   CC_PAYMENT_GATEWAY_ABI,
 };

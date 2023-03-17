@@ -4,6 +4,7 @@ import ConnectPage from "../pages/ConnectPage";
 import PermissionPage from "../pages/PermissionPage";
 import NoMetamaskPage from "../pages/NoMetamaskPage";
 import NotDeployedPage from "../pages/NotDeployedPage";
+import DonePage from "../pages/DonePage";
 import ErrorPage from "../pages/ErrorPage";
 
 import MainPage from "../pages/MainPage";
@@ -80,6 +81,10 @@ export const routes: ISwitchItem[] = [
   {
     path: "/error-page",
     element: ErrorPage,
+  },
+  {
+    path: "/done-page",
+    element: DonePage,
   },
 ];
 

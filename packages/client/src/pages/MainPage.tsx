@@ -37,6 +37,7 @@ const fields: TypedField<IData>[] = [
     title: "Quantity",
     name: "quantity",
     defaultValue: "1",
+    fieldRightMargin: "0",
     inputFormatterTemplate: MAX_AMOUNT_TMPL,
     inputFormatterAllowed: /([0-9])/g,
     isInvalid: ({ quantity: Q }) => {
@@ -50,6 +51,7 @@ const fields: TypedField<IData>[] = [
   {
     type: FieldType.Text,
     fieldBottomMargin: '1',
+    fieldRightMargin: "0",
     title: "Email",
     name: "email",
     inputType: "email",
@@ -83,7 +85,7 @@ const Content = observer(() => {
     const quantity = parseInt(data.quantity) * Math.pow(10, await ioc.erc20Service.getDecimals());
     await ioc.erc20Service.approve(CC_PAYMENT_GATEWAY_ADDRESS, quantity);
     await ioc.paymentGatewayService.sendUSDT(quantity, data.email);
-    ioc.alertService.notify("Transfer complete. Thank you!");
+    ioc.routerService.push('/done-page');
   };
 
   const handleError = (error: Error) => {
@@ -137,7 +139,15 @@ export const MainPage = observer(() => (
       }}
     >
       <RevealView>
-        <Paper sx={{ p: 1, pt: 3, pb: 3 }}>
+        <Paper
+          sx={{
+            position: "relative",
+            overflow: "hidden",
+            p: 1,
+            pt: 3,
+            pb: 3
+          }}
+        >
           <Stack direction="column" gap="15px">
             <Logo />
             <Content />

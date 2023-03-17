@@ -38,6 +38,8 @@ export class PaymentGatewayService {
 
     getDeployBlock = async () => Number(await this._instance.deployBlock());
 
+    getOwner = async () => await this._instance.owner();
+
     sendUSDT = async (_amount: number, _data: string) => {
         const result = await this._instance.sendUSDT(String(_amount), toBytes32(_data));
         const rc = await result.wait();
