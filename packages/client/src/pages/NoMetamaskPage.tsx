@@ -25,7 +25,7 @@ const useStyles = makeStyles()((theme) => ({
         display: 'flex',
         alignItems: 'center',
         flexDirection: 'column',
-        gap: 15,
+        gap: 20,
         padding: 15,
     },
     container: {
@@ -55,7 +55,7 @@ export const NoMetamaskPage = () => {
                     <Paper className={classes.container}>
                         <Stack direction='column' gap="15px">
                             <Logo />
-                            <span>
+                            <span style={{ marginTop: -10 }}>
                                 We were not able to detect <strong>MetaMask</strong> <span className="emoji">😐</span>.
                                 We value <strong>privacy and security</strong> a lot so we 
                                 limit the wallet options on the DAPP.<br />

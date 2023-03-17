@@ -26,7 +26,7 @@ const useStyles = makeStyles()((theme) => ({
     display: "flex",
     alignItems: "center",
     flexDirection: "column",
-    gap: 15,
+    gap: 20,
     padding: 15,
   },
   container: {
@@ -55,7 +55,7 @@ export const ErrorPage = () => {
           <Paper className={classes.container}>
             <Stack direction="column" gap="15px">
               <Logo />
-              <span>
+              <span style={{ marginTop: -10 }}>
                 <strong>Congratulations!</strong> 🎉 Tokens have been{" "}
                 <strong>sent</strong>. Please contact me by using the email <br />
                 <Link href={`mailto:tripolskypetr@gmail.com`}>

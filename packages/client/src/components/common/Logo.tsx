@@ -79,6 +79,7 @@ export const Logo = observer(() => {
             src="/avatar.png"
             alt="Peter Tripolsky"
             sx={{ width: 128, height: 128 }}
+            imgProps={{ loading: "lazy" }}
           />
           <Typography variant="h6" sx={{ mt: -2 }}>Peter Tripolsky</Typography>
           <Typography

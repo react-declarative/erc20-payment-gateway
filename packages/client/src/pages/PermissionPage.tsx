@@ -25,7 +25,7 @@ const useStyles = makeStyles()((theme) => ({
         display: 'flex',
         alignItems: 'center',
         flexDirection: 'column',
-        gap: 15,
+        gap: 20,
         padding: 15,
     },
     container: {
@@ -54,7 +54,7 @@ export const ConnectPage = () => {
                     <Paper className={classes.container}>
                         <Stack direction='column' gap="15px">
                             <Logo />
-                            <span>
+                            <span style={{ marginTop: -10 }}>
                                 It looks like you rejected the wallet connection request <span className="emoji">😐</span><br />
                                 Please reload this page and try again
                             </span>
