@@ -34,9 +34,15 @@ export const routes: ISwitchItem[] = [
   {
     path: "/main-page",
     element: MainPage,
-    prefetch: () => ioc.contractService.prefetch(),
+    prefetch: async () => await Promise.all([
+      ioc.erc20Service.prefetch(),
+      ioc.paymentGatewayService.prefetch(),
+    ]),
     redirect: () => {
-      if (!ioc.contractService.isContractConnected) {
+      if (!ioc.paymentGatewayService.isContractConnected) {
+        return "/notdeployed-page";
+      }
+      if (!ioc.erc20Service.isContractConnected) {
         return "/notdeployed-page";
       }
       return null;
@@ -45,9 +51,15 @@ export const routes: ISwitchItem[] = [
   {
     path: "/admin-page",
     element: AdminPage,
-    prefetch: () => ioc.contractService.prefetch(),
+    prefetch: async () => await Promise.all([
+      ioc.erc20Service.prefetch(),
+      ioc.paymentGatewayService.prefetch(),
+    ]),
     redirect: () => {
-      if (!ioc.contractService.isContractConnected) {
+      if (!ioc.paymentGatewayService.isContractConnected) {
+        return "/notdeployed-page";
+      }
+      if (!ioc.erc20Service.isContractConnected) {
         return "/notdeployed-page";
       }
       return null;

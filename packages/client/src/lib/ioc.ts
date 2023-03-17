@@ -1,18 +1,19 @@
 import { inject } from 'react-declarative';
 
-import ContractService from "./services/ContractService";
-import EthersService from "./services/EthersService";
-import RouterService from './services/RouterService';
-import AlertService from './services/AlertService';
-import ConnectService from './services/ConnectService';
-import LayoutService from './services/LayoutService';
+import EthersService from "./services/base/EthersService";
+import RouterService from './services/base/RouterService';
+import AlertService from './services/base/AlertService';
+import ConnectService from './services/base/ConnectService';
+import LayoutService from './services/base/LayoutService';
+
+import PaymentGatewayService from "./services/app/PaymentGatewayService";
+import Erc20Service from "./services/app/Erc20Service";
 
 import "./config"
 
 import TYPES from "./types";
 
 const baseServices = {
-    contractService: inject<ContractService>(TYPES.contractService),
     ethersService: inject<EthersService>(TYPES.ethersService),
     routerService: inject<RouterService>(TYPES.routerService),
     alertService: inject<AlertService>(TYPES.alertService),
@@ -20,8 +21,14 @@ const baseServices = {
     layoutService: inject<LayoutService>(TYPES.layoutService),
 };
 
+const appServices = {
+    paymentGatewayService: inject<PaymentGatewayService>(TYPES.paymentGatewayService),
+    erc20Service: inject<Erc20Service>(TYPES.erc20Service),
+};
+
 export const ioc = {
     ...baseServices,
+    ...appServices,
 };
 
 window.addEventListener('unhandledrejection', () => {
@@ -32,8 +39,6 @@ window.addEventListener('unhandledrejection', () => {
     ioc.routerService.push('/error-page');
 });*/
 
-// if (process.env.REACT_APP_STAGE === 'dev') {
-    (window as any).ioc = ioc;
-// }
+(window as any).ioc = ioc;
 
 export default ioc;

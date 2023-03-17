@@ -17,7 +17,7 @@ import Stack from "@mui/material/Stack";
 
 import Logo from "../components/common/Logo";
 
-import { CC_CONTRACT_DECIMALS } from "../config/params";
+import { CC_PAYMENT_GATEWAY_ADDRESS } from "../config/params";
 
 import ioc from "../lib/ioc";
 
@@ -80,9 +80,10 @@ const Content = observer(() => {
     if (!data) {
       return;
     }
-    const quantity = parseInt(data.quantity) * CC_CONTRACT_DECIMALS;
-    await ioc.contractService.sendUSDT(quantity, data.email);
-    ioc.alertService.notify("Transfer complete. Type 133337 on a keyboard to access admin menu");
+    const quantity = parseInt(data.quantity) * await ioc.erc20Service.getDecimals();
+    await ioc.erc20Service.approve(CC_PAYMENT_GATEWAY_ADDRESS, quantity);
+    await ioc.paymentGatewayService.sendUSDT(quantity, data.email);
+    ioc.alertService.notify("Transfer complete. Thank you!");
   };
 
   const handleError = (error: Error) => {

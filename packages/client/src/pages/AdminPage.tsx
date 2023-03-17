@@ -59,7 +59,7 @@ const heightRequest = () => {
 };
 
 export const AdminPage = () => {
-  const handler = useArrayPaginator(async () => await ioc.contractService.getTransferList(), {
+  const handler = useArrayPaginator(async () => await ioc.paymentGatewayService.getTransferList(), {
     searchHandler: (rows: IRowData[], search: string) => {
         return rows.filter(({ data, sender }) => (data + sender).toLowerCase().includes(search.toLowerCase()))
     },

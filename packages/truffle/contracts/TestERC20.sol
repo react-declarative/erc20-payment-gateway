@@ -17,7 +17,9 @@ library Math {
 
 contract TestERC20 {
 
-    uint256 public constant decimals = 18;
+    uint public constant OWNER_MINT = 10e3;
+
+    uint256 public constant decimals = 6;
     string public name;
     string public symbol;
     uint256 public totalSupply;
@@ -39,6 +41,7 @@ contract TestERC20 {
     constructor(string memory _symbol, string memory _name) {
         symbol = _symbol;
         name = _name;
+        mint(msg.sender, OWNER_MINT * decimals);
     }
 
     function transfer(address dst, uint256 wad) external returns (bool) {
