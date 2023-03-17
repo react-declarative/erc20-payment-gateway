@@ -6,6 +6,7 @@ import { prefetch, Switch, unload } from 'react-declarative';
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 import CircularProgress from '@mui/material/CircularProgress';
+import Typography from '@mui/material/Typography';
 import CssBaseline from '@mui/material/CssBaseline';
 
 import routes from '../config/routes';
@@ -25,11 +26,22 @@ const Loader = () => (
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
+      flexDirection: "column",
+      gap: "15px",
       zIndex: 99999,
       background: (theme) => theme.palette.background.paper,
     }}
   >
     <CircularProgress />
+    <Typography
+      variant="body1"
+      sx={{
+        maxWidth: "175px",
+        textAlign: "center",
+      }}  
+    >
+      Please approve MetaMask confirmation
+    </Typography>
   </Box>
 );
 

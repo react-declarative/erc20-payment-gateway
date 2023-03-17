@@ -2,6 +2,8 @@
 
 > A payment gateway for any `IERC20` tokens (USDT) with testbed on top of [TestERC20](https://stackoverflow.com/questions/75043524/minimal-erc20-contract-for-testing/75043525#75043525) token
 
+![screencast.git](./assets/screencast.gif)
+
 ## Usage
 
 1. Run `npm run start:ganache` in separated terminal
