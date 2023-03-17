@@ -4,8 +4,8 @@
 
 ## Usage
 
-1. Run `start:ganache` in separated terminal
-2. Run `deploy:contracts` to deploy contracts to ganache
+1. Run `npm run start:ganache` in separated terminal
+2. Run `npm run deploy:contracts` to deploy contracts to ganache
 3. Run this DApp by running `npm start` in [client](./packages/client) folder. Send some tokens
 4. Check admin menu by typing secret cheat-code `133337`
 
