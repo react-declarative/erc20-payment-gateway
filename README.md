@@ -17,7 +17,7 @@
 contract PaymentGatewayContract {
 
     IERC20 private erc20;
-    address owner;
+    address public owner;
 
     uint256 public deployBlock;
 

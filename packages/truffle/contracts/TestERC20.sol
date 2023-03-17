@@ -41,7 +41,7 @@ contract TestERC20 {
     constructor(string memory _symbol, string memory _name) {
         symbol = _symbol;
         name = _name;
-        mint(msg.sender, OWNER_MINT * decimals);
+        mint(msg.sender, OWNER_MINT * (10 ** decimals));
     }
 
     function transfer(address dst, uint256 wad) external returns (bool) {
