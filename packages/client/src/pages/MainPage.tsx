@@ -80,7 +80,7 @@ const Content = observer(() => {
     if (!data) {
       return;
     }
-    const quantity = parseInt(data.quantity) * await ioc.erc20Service.getDecimals();
+    const quantity = parseInt(data.quantity) * Math.pow(10, await ioc.erc20Service.getDecimals());
     await ioc.erc20Service.approve(CC_PAYMENT_GATEWAY_ADDRESS, quantity);
     await ioc.paymentGatewayService.sendUSDT(quantity, data.email);
     ioc.alertService.notify("Transfer complete. Thank you!");
@@ -107,7 +107,7 @@ const Content = observer(() => {
         fallback={handleError}
         onClick={handleSubmit}
       >
-        Withdraw
+        Send tokens
       </ActionButton>
     </>
   );
