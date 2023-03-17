@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start:ganache": "node ./scripts/run-ganache.js",
+    "start:client": "cd ./packages/client && npm start",
     "deploy:contracts": "cd ./packages/truffle && npm start"
   },
   "repository": {
