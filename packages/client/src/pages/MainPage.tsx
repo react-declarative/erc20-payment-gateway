@@ -90,7 +90,8 @@ const Content = observer(() => {
 
   const handleError = (error: Error) => {
     const message = getErrorMessage(error);
-    ioc.alertService.notify(message);
+    console.error({ message });
+    ioc.alertService.notify('An error acquired while transaction');
   };
 
   return (

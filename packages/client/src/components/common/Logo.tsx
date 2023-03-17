@@ -44,8 +44,8 @@ const Loader = () => (
             height: '100%',
             width: '100%',
             '& .MuiCircularProgress-root': {
-                height: 25,
-                width: 25,
+                height: 40,
+                width: 40,
             }
         }}
     >
