@@ -30,9 +30,13 @@ export class Erc20Service {
         makeAutoObservable(this);
     };
 
-    getDecimals = async () => Number(await this._instance.decimals());
+    getSymbol = singleshot(async () => String(await this._instance.symbol()));
+
+    getDecimals = singleshot(async () => Number(await this._instance.decimals()));
 
     balanceOf = async (address:  string) => Number(await this._instance.balanceOf(address));
+
+    balanceOfOwner = async () => Number(await this._instance.balanceOf(await this.ethersService.getAccount()));
 
     transfer = async (address: string, amount: number) => Number(await this._instance.transfer(address, String(amount)));
 

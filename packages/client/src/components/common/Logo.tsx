@@ -28,7 +28,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
     right: 0,
     width: "100%",
     height: LOGO_HEIGHT,
-    background: darken(theme.palette.background.paper, 0.06),
+    background: darken(theme.palette.background.paper, 0.12),
   },
   adjust: {
     paddingBottom: LOGO_HEIGHT,

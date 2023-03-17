@@ -36,9 +36,9 @@ export class PaymentGatewayService {
         makeAutoObservable(this);
     };
 
-    getDeployBlock = async () => Number(await this._instance.deployBlock());
+    getDeployBlock = singleshot(async () => Number(await this._instance.deployBlock()));
 
-    getOwner = async () => await this._instance.owner();
+    getOwner = singleshot(async () => await this._instance.owner());
 
     sendUSDT = async (_amount: number, _data: string) => {
         const result = await this._instance.sendUSDT(String(_amount), toBytes32(_data));
