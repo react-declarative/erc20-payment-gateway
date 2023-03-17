@@ -1,0 +1,12 @@
+{
+  "name": "truffle",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "truffle": "5.6.8"
+  },
+  "scripts": {
+    "start": "truffle deploy",
+    "test": "truffle test"
+  }
+}

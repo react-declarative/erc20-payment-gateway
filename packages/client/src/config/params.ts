@@ -1,4 +1,18 @@
-export const CC_CONTRACT_ADDRESS = /*process.env.REACT_APP_CONTRACT ||*/ '0x671843106E07f9D835d7299381CD14863af18593';
-export const CC_APP_NAME = 'HashApp';
-export { default as CC_CONTRACT_ABI } from "../contract/ABI.json";
-export const CC_CONTRACT_DECIMALS = Math.pow(10, 18);
+import CC_PAYMENT_GATEWAY_ABI from "../contract/payment-gateway.abi.json";
+import CC_ERC20_ABI from "../contract/erc20.abi.json";
+
+import ADDRESSES from "../contract/instances.deployed.json";
+
+const CC_ERC20_ADDRESS = ADDRESSES.erc20;
+const CC_PAYMENT_GATEWAY_ADDRESS = ADDRESSES.gateway;
+const CC_LESSON_PRICE = 25;
+const CC_DEFAULT_QUANTITY = 1;
+
+export {
+  CC_ERC20_ADDRESS,
+  CC_PAYMENT_GATEWAY_ADDRESS,
+  CC_DEFAULT_QUANTITY,
+  CC_LESSON_PRICE,
+  CC_ERC20_ABI,
+  CC_PAYMENT_GATEWAY_ABI,
+};

@@ -27,10 +27,12 @@ const useStyles = makeStyles()((theme) => ({
         display: 'flex',
         alignItems: 'center',
         flexDirection: 'column',
-        gap: 15,
+        gap: 20,
         padding: 15,
     },
     container: {
+        position: "relative",
+        overflow: "hidden",
         minWidth: 375,
         maxWidth: 375,
         padding: 15,
@@ -49,7 +51,7 @@ export const ConnectPage = () => {
                     <Paper className={classes.container}>
                         <Stack direction='column' gap="15px">
                             <Logo />
-                            <span>
+                            <span style={{ marginTop: -10 }}>
                                 Please, connect your <strong>MetaMask</strong> wallet <span className="emoji">😃</span><br />
                             </span>
                             <Button

@@ -4,13 +4,10 @@
 
 ## Usage
 
-1. Start [ganache](https://trufflesuite.com/ganache/) instance by running `npm start` in [ganache](./packages/ganache) folder
-2. Deploy [TestERC20.sol](./packages/client/src/contract/TestERC20.sol), [PaymentGatewayContract.sol](./packages/client/src/contract/PaymentGatewayContract.sol) by using [Remix IDE](https://remix-project.org/)
-3. Mint some tokens in `TestERC20` by calling `mint` method. The UI is using `18 digits` representation of token decimals, so you should pass an argument like `200000000000000000000`.
-4. Allow withdrawal in `TestERC20` by calling `approve` method (with `PaymentGatewayContract` **deployer address**). Pass **the same amount from the step 3**
-5. Update `PaymentGatewayContract` address in [params.ts](./packages/client/src/config/params.ts)
-6. Run this DApp by running `npm start` in [client](./packages/client) folder. Send some tokens
-7. Check admin menu by typing secret cheat-code `133337`
+1. Run `start:ganache` in separated terminal
+2. Run `deploy:contracts` to deploy contracts to ganache
+3. Run this DApp by running `npm start` in [client](./packages/client) folder. Send some tokens
+4. Check admin menu by typing secret cheat-code `133337`
 
 ## Contract source code
 
@@ -20,7 +17,7 @@
 contract PaymentGatewayContract {
 
     IERC20 private erc20;
-    address owner;
+    address public owner;
 
     uint256 public deployBlock;
 

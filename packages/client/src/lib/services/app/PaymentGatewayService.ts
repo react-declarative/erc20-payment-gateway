@@ -7,16 +7,16 @@ import {
     /*BigNumber,*/
 } from "ethers";
 
-import EthersService from "./EthersService";
+import EthersService from "../base/EthersService";
 
-import { CC_CONTRACT_ADDRESS } from "../../config/params";
-import { CC_CONTRACT_ABI } from "../../config/params";
+import { CC_PAYMENT_GATEWAY_ABI } from "../../../config/params";
+import { CC_PAYMENT_GATEWAY_ADDRESS } from "../../../config/params";
 
-import TYPES from "../types";
+import TYPES from "../../types";
 
 type IContract = BaseContract & Record<string, (...args: any[]) => Promise<any>>;
 
-export class ContractService {
+export class PaymentGatewayService {
 
     private readonly ethersService = inject<EthersService>(TYPES.ethersService);
 
@@ -36,7 +36,9 @@ export class ContractService {
         makeAutoObservable(this);
     };
 
-    getDeployBlock = async () => Number(await this._instance.deployBlock());
+    getDeployBlock = singleshot(async () => Number(await this._instance.deployBlock()));
+
+    getOwner = singleshot(async () => await this._instance.owner());
 
     sendUSDT = async (_amount: number, _data: string) => {
         const result = await this._instance.sendUSDT(String(_amount), toBytes32(_data));
@@ -55,9 +57,9 @@ export class ContractService {
         const eventTopic = ethers.utils.id(eventSignature);
         const deployBlock = await this.getDeployBlock();
         const currentBlock = await this.ethersService.provider.getBlockNumber();
-        const parser = new ethers.utils.Interface(CC_CONTRACT_ABI);
+        const parser = new ethers.utils.Interface(CC_PAYMENT_GATEWAY_ABI);
         const rawLogs = await this.ethersService.provider.getLogs({
-            address: CC_CONTRACT_ADDRESS,
+            address: CC_PAYMENT_GATEWAY_ADDRESS,
             topics: [eventTopic],
             fromBlock: deployBlock, 
             toBlock: currentBlock,
@@ -75,15 +77,15 @@ export class ContractService {
     };
 
     prefetch = singleshot(async () => {
-        console.log("ContractService prefetch started");
+        console.log("PaymentGatewayService prefetch started");
         try {
-            const deployedCode = await this.ethersService.getCode(CC_CONTRACT_ADDRESS);
+            const deployedCode = await this.ethersService.getCode(CC_PAYMENT_GATEWAY_ADDRESS);
             if (deployedCode === '0x') {
-                throw new Error('ContractService contract not deployed');
+                throw new Error('PaymentGatewayService contract not deployed');
             }
             const instance = new ethers.Contract(
-                CC_CONTRACT_ADDRESS,
-                CC_CONTRACT_ABI,
+                CC_PAYMENT_GATEWAY_ADDRESS,
+                CC_PAYMENT_GATEWAY_ABI,
                 this.ethersService.getSigner(),
             ) as IContract;
             runInAction(() => this._instance = instance);
@@ -97,10 +99,10 @@ export class ContractService {
                 });
             });
         } catch (e) {
-            console.warn('ContractService prefetch failed', e);
+            console.warn('PaymentGatewayService prefetch failed', e);
         }
     });
 
 };
 
-export default ContractService;
+export default PaymentGatewayService;

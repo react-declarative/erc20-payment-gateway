@@ -5,7 +5,7 @@ import RouterService from "./RouterService";
 import EthersService from "./EthersService";
 import LayoutService from "./LayoutService";
 
-import TYPES from "../types";
+import TYPES from "../../types";
 
 export class ConnectPageService {
 

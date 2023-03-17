@@ -4,6 +4,7 @@ import ConnectPage from "../pages/ConnectPage";
 import PermissionPage from "../pages/PermissionPage";
 import NoMetamaskPage from "../pages/NoMetamaskPage";
 import NotDeployedPage from "../pages/NotDeployedPage";
+import DonePage from "../pages/DonePage";
 import ErrorPage from "../pages/ErrorPage";
 
 import MainPage from "../pages/MainPage";
@@ -34,9 +35,15 @@ export const routes: ISwitchItem[] = [
   {
     path: "/main-page",
     element: MainPage,
-    prefetch: () => ioc.contractService.prefetch(),
+    prefetch: async () => await Promise.all([
+      ioc.erc20Service.prefetch(),
+      ioc.paymentGatewayService.prefetch(),
+    ]),
     redirect: () => {
-      if (!ioc.contractService.isContractConnected) {
+      if (!ioc.paymentGatewayService.isContractConnected) {
+        return "/notdeployed-page";
+      }
+      if (!ioc.erc20Service.isContractConnected) {
         return "/notdeployed-page";
       }
       return null;
@@ -45,9 +52,15 @@ export const routes: ISwitchItem[] = [
   {
     path: "/admin-page",
     element: AdminPage,
-    prefetch: () => ioc.contractService.prefetch(),
+    prefetch: async () => await Promise.all([
+      ioc.erc20Service.prefetch(),
+      ioc.paymentGatewayService.prefetch(),
+    ]),
     redirect: () => {
-      if (!ioc.contractService.isContractConnected) {
+      if (!ioc.paymentGatewayService.isContractConnected) {
+        return "/notdeployed-page";
+      }
+      if (!ioc.erc20Service.isContractConnected) {
         return "/notdeployed-page";
       }
       return null;
@@ -68,6 +81,10 @@ export const routes: ISwitchItem[] = [
   {
     path: "/error-page",
     element: ErrorPage,
+  },
+  {
+    path: "/done-page",
+    element: DonePage,
   },
 ];
 
