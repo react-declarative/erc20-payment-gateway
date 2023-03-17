@@ -1,0 +1,26 @@
+{
+  "name": "erc20-payment-gateway",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:ganache": "node ./scripts/run-ganache.js",
+    "deploy:contracts": "cd ./packages/truffle && npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/react-declarative/erc20-payment-gateway.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/react-declarative/erc20-payment-gateway/issues"
+  },
+  "homepage": "https://github.com/react-declarative/erc20-payment-gateway#readme",
+  "dependencies": {
+    "ganache-cli": "6.12.2",
+    "glob": "8.0.3",
+    "rimraf": "3.0.2"
+  }
+}

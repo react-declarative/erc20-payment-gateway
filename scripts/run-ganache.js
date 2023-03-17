@@ -4,7 +4,7 @@ const rimraf = require("rimraf");
 const glob = require("glob");
 const path = require("path");
 
-const config = require('../../config.json');
+const config = require('../config.json');
 
 glob.sync(path.join(config.db_path, "*"))
   .filter((file) => file !== path.join(config.db_path, ".gitkeep"))
