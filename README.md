@@ -10,6 +10,7 @@
 2. Run `npm run deploy:contracts` to deploy contracts to ganache
 3. Run this DApp by running `npm start` in [client](./packages/client) folder. Send some tokens
 4. Check admin menu by typing secret cheat-code `133337`
+5. If you need test eth's on a balance check [config.json](./config.json). The smart-contract is going to mint 10_000 tokens for the first address in the list.
 
 ## Contract source code
 
