@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { makeStyles } from '../styles/makeStyles';
+import { makeStyles } from '../../styles/makeStyles';
 
 import { PortalView, RevealView } from 'react-declarative';
 
@@ -9,7 +9,9 @@ import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 
-import Logo from '../components/common/Logo';
+import Logo from '../../components/common/Logo';
+
+import ioc from '../../lib/ioc';
 
 const useStyles = makeStyles()((theme) => ({
     root: {
@@ -42,11 +44,6 @@ const useStyles = makeStyles()((theme) => ({
 
 export const ConnectPage = () => {
     const { classes } = useStyles();
-
-    const handleReload = () => {
-        window.location.reload();
-    };
-
     return (
         <PortalView>
             <Box className={classes.root}>
@@ -55,14 +52,13 @@ export const ConnectPage = () => {
                         <Stack direction='column' gap="15px">
                             <Logo />
                             <span style={{ marginTop: -10 }}>
-                                Could not find the contract, are you connected to the right chain?<span className="emoji">😐</span><br />
-                                Please reload this page and try again
+                                Please, connect your <strong>MetaMask</strong> wallet <span className="emoji">😃</span><br />
                             </span>
                             <Button
                                 variant="contained"
-                                onClick={handleReload}
+                                onClick={ioc.connectService.handleConnectClick}
                             >
-                                Reload page
+                                Connect wallet
                             </Button>
                         </Stack>
                     </Paper>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { makeStyles } from '../styles/makeStyles';
+import { makeStyles } from '../../styles/makeStyles';
 
 import { PortalView, RevealView } from 'react-declarative';
 
@@ -9,7 +9,7 @@ import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 
-import Logo from '../components/common/Logo';
+import Logo from '../../components/common/Logo';
 
 const useStyles = makeStyles()((theme) => ({
     root: {
@@ -40,7 +40,7 @@ const useStyles = makeStyles()((theme) => ({
     },
 }));
 
-export const ConnectPage = () => {
+export const ErrorPage = () => {
     const { classes } = useStyles();
 
     const handleReload = () => {
@@ -55,7 +55,7 @@ export const ConnectPage = () => {
                         <Stack direction='column' gap="15px">
                             <Logo />
                             <span style={{ marginTop: -10 }}>
-                                It looks like you rejected the wallet connection request <span className="emoji">😐</span><br />
+                                It looks like DAPP finished with uncaught exception<span className="emoji">😐</span><br />
                                 Please reload this page and try again
                             </span>
                             <Button
@@ -66,10 +66,10 @@ export const ConnectPage = () => {
                             </Button>
                         </Stack>
                     </Paper>
-                </RevealView> 
+                </RevealView>
             </Box>
         </PortalView>
     );
 };
 
-export default ConnectPage;
+export default ErrorPage;

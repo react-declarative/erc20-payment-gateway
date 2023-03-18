@@ -1,6 +1,6 @@
 import React from "react";
 
-import { makeStyles } from "../styles/makeStyles";
+import { makeStyles } from "../../styles/makeStyles";
 
 import { PortalView, RevealView } from "react-declarative";
 
@@ -10,7 +10,7 @@ import Stack from "@mui/material/Stack";
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 
-import Logo from "../components/common/Logo";
+import Logo from "../../components/common/Logo";
 
 const useStyles = makeStyles()((theme) => ({
   root: {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { makeStyles } from '../styles/makeStyles';
+import { makeStyles } from '../../styles/makeStyles';
 
 import { PortalView, RevealView } from 'react-declarative';
 
@@ -9,7 +9,7 @@ import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 
-import Logo from '../components/common/Logo';
+import Logo from '../../components/common/Logo';
 
 const useStyles = makeStyles()((theme) => ({
     root: {
@@ -40,7 +40,7 @@ const useStyles = makeStyles()((theme) => ({
     },
 }));
 
-export const ErrorPage = () => {
+export const ConnectPage = () => {
     const { classes } = useStyles();
 
     const handleReload = () => {
@@ -55,7 +55,7 @@ export const ErrorPage = () => {
                         <Stack direction='column' gap="15px">
                             <Logo />
                             <span style={{ marginTop: -10 }}>
-                                It looks like DAPP finished with uncaught exception<span className="emoji">😐</span><br />
+                                Could not find the contract, are you connected to the right chain?<span className="emoji">😐</span><br />
                                 Please reload this page and try again
                             </span>
                             <Button
@@ -72,4 +72,4 @@ export const ErrorPage = () => {
     );
 };
 
-export default ErrorPage;
+export default ConnectPage;

@@ -6,7 +6,7 @@ import {
   Breadcrumbs,
 } from 'react-declarative';
 
-import ioc from '../lib/ioc';
+import ioc from '../../lib/ioc';
 
 const columns: IColumn[] = [
     {

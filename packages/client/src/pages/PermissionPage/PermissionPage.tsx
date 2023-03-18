@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { makeStyles } from '../styles/makeStyles';
+import { makeStyles } from '../../styles/makeStyles';
 
 import { PortalView, RevealView } from 'react-declarative';
 
@@ -9,7 +9,7 @@ import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 
-import Logo from '../components/common/Logo';
+import Logo from '../../components/common/Logo';
 
 const useStyles = makeStyles()((theme) => ({
     root: {
@@ -40,8 +40,7 @@ const useStyles = makeStyles()((theme) => ({
     },
 }));
 
-export const NoMetamaskPage = () => {
-
+export const ConnectPage = () => {
     const { classes } = useStyles();
 
     const handleReload = () => {
@@ -56,9 +55,7 @@ export const NoMetamaskPage = () => {
                         <Stack direction='column' gap="15px">
                             <Logo />
                             <span style={{ marginTop: -10 }}>
-                                We were not able to detect <strong>MetaMask</strong> <span className="emoji">😐</span>.
-                                We value <strong>privacy and security</strong> a lot so we 
-                                limit the wallet options on the DAPP.<br />
+                                It looks like you rejected the wallet connection request <span className="emoji">😐</span><br />
                                 Please reload this page and try again
                             </span>
                             <Button
@@ -69,10 +66,10 @@ export const NoMetamaskPage = () => {
                             </Button>
                         </Stack>
                     </Paper>
-                </RevealView>
+                </RevealView> 
             </Box>
-        </PortalView> 
+        </PortalView>
     );
 };
 
-export default NoMetamaskPage;
+export default ConnectPage;

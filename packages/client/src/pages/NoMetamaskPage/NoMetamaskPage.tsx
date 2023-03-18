@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { makeStyles } from '../styles/makeStyles';
+import { makeStyles } from '../../styles/makeStyles';
 
 import { PortalView, RevealView } from 'react-declarative';
 
@@ -9,9 +9,7 @@ import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 
-import Logo from '../components/common/Logo';
-
-import ioc from '../lib/ioc';
+import Logo from '../../components/common/Logo';
 
 const useStyles = makeStyles()((theme) => ({
     root: {
@@ -42,8 +40,14 @@ const useStyles = makeStyles()((theme) => ({
     },
 }));
 
-export const ConnectPage = () => {
+export const NoMetamaskPage = () => {
+
     const { classes } = useStyles();
+
+    const handleReload = () => {
+        window.location.reload();
+    };
+
     return (
         <PortalView>
             <Box className={classes.root}>
@@ -52,20 +56,23 @@ export const ConnectPage = () => {
                         <Stack direction='column' gap="15px">
                             <Logo />
                             <span style={{ marginTop: -10 }}>
-                                Please, connect your <strong>MetaMask</strong> wallet <span className="emoji">😃</span><br />
+                                We were not able to detect <strong>MetaMask</strong> <span className="emoji">😐</span>.
+                                We value <strong>privacy and security</strong> a lot so we 
+                                limit the wallet options on the DAPP.<br />
+                                Please reload this page and try again
                             </span>
                             <Button
                                 variant="contained"
-                                onClick={ioc.connectService.handleConnectClick}
+                                onClick={handleReload}
                             >
-                                Connect wallet
+                                Reload page
                             </Button>
                         </Stack>
                     </Paper>
                 </RevealView>
             </Box>
-        </PortalView>
+        </PortalView> 
     );
 };
 
-export default ConnectPage;
+export default NoMetamaskPage;
