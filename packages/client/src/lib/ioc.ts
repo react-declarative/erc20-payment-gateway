@@ -5,6 +5,7 @@ import RouterService from './services/base/RouterService';
 import AlertService from './services/base/AlertService';
 import ConnectService from './services/base/ConnectService';
 import LayoutService from './services/base/LayoutService';
+import CredentialsService from './services/base/CredentialsService';
 
 import PaymentGatewayService from "./services/app/PaymentGatewayService";
 import Erc20Service from "./services/app/Erc20Service";
@@ -19,6 +20,7 @@ const baseServices = {
     alertService: inject<AlertService>(TYPES.alertService),
     connectService: inject<ConnectService>(TYPES.connectService),
     layoutService: inject<LayoutService>(TYPES.layoutService),
+    credentialsService: inject<CredentialsService>(TYPES.credentialsService),
 };
 
 const appServices = {

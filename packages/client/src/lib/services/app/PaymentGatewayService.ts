@@ -8,9 +8,7 @@ import {
 } from "ethers";
 
 import EthersService from "../base/EthersService";
-
-import { CC_PAYMENT_GATEWAY_ABI } from "../../../config/params";
-import { CC_PAYMENT_GATEWAY_ADDRESS } from "../../../config/params";
+import CredentialsService from "../base/CredentialsService";
 
 import TYPES from "../../types";
 
@@ -19,6 +17,7 @@ type IContract = BaseContract & Record<string, (...args: any[]) => Promise<any>>
 export class PaymentGatewayService {
 
     private readonly ethersService = inject<EthersService>(TYPES.ethersService);
+    private readonly credentialsService = inject<CredentialsService>(TYPES.credentialsService);
 
     public readonly transferSubject = new Subject<{
         sender: string;
@@ -53,13 +52,15 @@ export class PaymentGatewayService {
     };
 
     getTransferList = async () => {
+        const GATEWAY_ADDRESS = await this.credentialsService.getPaymentGatewayAddress();
+        const GATEWAY_ABI = await this.credentialsService.getPaymentGatewayAbi();
         const eventSignature = 'Transfer(address,uint256,bytes32)';
         const eventTopic = ethers.utils.id(eventSignature);
         const deployBlock = await this.getDeployBlock();
         const currentBlock = await this.ethersService.provider.getBlockNumber();
-        const parser = new ethers.utils.Interface(CC_PAYMENT_GATEWAY_ABI);
+        const parser = new ethers.utils.Interface(GATEWAY_ABI);
         const rawLogs = await this.ethersService.provider.getLogs({
-            address: CC_PAYMENT_GATEWAY_ADDRESS,
+            address: GATEWAY_ADDRESS,
             topics: [eventTopic],
             fromBlock: deployBlock, 
             toBlock: currentBlock,
@@ -79,13 +80,15 @@ export class PaymentGatewayService {
     prefetch = singleshot(async () => {
         console.log("PaymentGatewayService prefetch started");
         try {
-            const deployedCode = await this.ethersService.getCode(CC_PAYMENT_GATEWAY_ADDRESS);
+            const GATEWAY_ADDRESS = await this.credentialsService.getPaymentGatewayAddress();
+            const GATEWAY_ABI = await this.credentialsService.getPaymentGatewayAbi();
+            const deployedCode = await this.ethersService.getCode(GATEWAY_ADDRESS);
             if (deployedCode === '0x') {
                 throw new Error('PaymentGatewayService contract not deployed');
             }
             const instance = new ethers.Contract(
-                CC_PAYMENT_GATEWAY_ADDRESS,
-                CC_PAYMENT_GATEWAY_ABI,
+                GATEWAY_ADDRESS,
+                GATEWAY_ABI,
                 this.ethersService.getSigner(),
             ) as IContract;
             runInAction(() => this._instance = instance);

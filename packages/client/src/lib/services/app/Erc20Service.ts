@@ -1,5 +1,5 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { inject, singleshot, toBytes32, fromBytes32 } from "react-declarative";
+import { inject, singleshot } from "react-declarative";
 
 import {
     ethers,
@@ -8,9 +8,7 @@ import {
 } from "ethers";
 
 import EthersService from "../base/EthersService";
-
-import { CC_ERC20_ABI } from "../../../config/params";
-import { CC_ERC20_ADDRESS } from "../../../config/params";
+import CredentialsService from "../base/CredentialsService";
 
 import TYPES from "../../types";
 
@@ -19,6 +17,7 @@ type IContract = BaseContract & Record<string, (...args: any[]) => Promise<any>>
 export class Erc20Service {
 
     private readonly ethersService = inject<EthersService>(TYPES.ethersService);
+    private readonly credentialsService = inject<CredentialsService>(TYPES.credentialsService);
 
     private _instance: IContract = null as never;
 
@@ -48,13 +47,15 @@ export class Erc20Service {
     prefetch = singleshot(async () => {
         console.log("Erc20Service prefetch started");
         try {
-            const deployedCode = await this.ethersService.getCode(CC_ERC20_ADDRESS);
+            const ERC20_ADDRESS = await this.credentialsService.getErc20Address();
+            const ERC20_ABI = await this.credentialsService.getErc20Abi();
+            const deployedCode = await this.ethersService.getCode(ERC20_ADDRESS);
             if (deployedCode === '0x') {
                 throw new Error('Erc20Service contract not deployed');
             }
             const instance = new ethers.Contract(
-                CC_ERC20_ADDRESS,
-                CC_ERC20_ABI,
+                ERC20_ADDRESS,
+                ERC20_ABI,
                 this.ethersService.getSigner(),
             ) as IContract;
             runInAction(() => this._instance = instance);

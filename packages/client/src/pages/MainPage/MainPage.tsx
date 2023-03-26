@@ -55,6 +55,7 @@ export const MainPage = observer(() => {
       ioc.erc20Service.getDecimals(),
       ioc.erc20Service.balanceOfOwner(),
       ioc.erc20Service.getSymbol(),
+      ioc.credentialsService.getTokenStandart(),
     ] as const;
 
   return (
@@ -70,10 +71,11 @@ export const MainPage = observer(() => {
                 onLoadStart={() => ioc.layoutService.setAppbarLoader(true)}
                 onLoadEnd={() => ioc.layoutService.setAppbarLoader(false)}
               >
-                {(decimals, ownerBalance, symbol) => (
+                {(decimals, ownerBalance, symbol, tokenStandart) => (
                   <Content
                     decimals={decimals}
                     ownerBalance={ownerBalance}
+                    tokenStandart={tokenStandart}
                     symbol={symbol}
                   />
                 )}

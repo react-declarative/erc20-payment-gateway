@@ -12,7 +12,6 @@ import Typography from "@mui/material/Typography";
 import {
   CC_LESSON_PRICE,
   CC_DEFAULT_QUANTITY,
-  CC_PAYMENT_GATEWAY_ADDRESS,
 } from "../../config/params";
 
 import ioc from "../../lib/ioc";
@@ -50,10 +49,12 @@ export const Content = ({
   decimals,
   ownerBalance,
   symbol,
+  tokenStandart,
 }: {
   decimals: number;
   ownerBalance: number;
   symbol: string;
+  tokenStandart: string;
 }) => {
   const [quantity, setQuantity] = useState(CC_DEFAULT_QUANTITY);
   const [email, setEmail] = useState("");
@@ -82,7 +83,8 @@ export const Content = ({
       ioc.alertService.notify("Insufficient wallet balance");
       return;
     }
-    await ioc.erc20Service.approve(CC_PAYMENT_GATEWAY_ADDRESS, amount);
+    const PAYMENT_GATEWAY_ADDRESS = await ioc.credentialsService.getPaymentGatewayAddress();
+    await ioc.erc20Service.approve(PAYMENT_GATEWAY_ADDRESS, amount);
     await ioc.paymentGatewayService.sendUSDT(amount, email);
     ioc.routerService.push("/done-page");
   };
@@ -106,6 +108,10 @@ export const Content = ({
         <Typography variant="body2">
           {formatAmount(Math.floor(ownerBalance / Math.pow(10, decimals)))}{" "}
           {symbol}
+        </Typography>
+        <Typography className={classes.bold}>Token standart</Typography>
+        <Typography variant="body2">
+          {tokenStandart}
         </Typography>
         <Typography className={classes.bold}>Contact email</Typography>
         <InputBase

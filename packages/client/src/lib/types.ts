@@ -4,6 +4,7 @@ const baseServices = {
     alertService: Symbol.for('alertService'),
     layoutService: Symbol.for('layoutService'),
     connectService: Symbol.for('connectService'),
+    credentialsService: Symbol.for('credentialsService'),
 };
 
 const appServices = {
