@@ -77,6 +77,10 @@ export class EthersService {
       });
     };
 
+    request = (...args: any[]): Promise<any>  => {
+        return window.ethereum.request(...args);
+    };
+
     prefetch = singleshot(async () => {
         console.log("EthersService prefetch started");
         try {
