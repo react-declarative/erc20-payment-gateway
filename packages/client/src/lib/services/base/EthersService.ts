@@ -25,7 +25,7 @@ export class EthersService {
     };
 
     get isMetamaskAvailable() {
-        return !!window.ethereum;
+        return !!window.ethereum?.isMetaMask;
     };
 
     get isAccountEnabled() {
