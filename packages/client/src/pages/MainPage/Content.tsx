@@ -78,7 +78,7 @@ export const Content = ({
   };
 
   const handleSubmit = async () => {
-    const amount = quantity * Math.pow(10, decimals);
+    const amount = quantity * Math.pow(10, decimals) * CC_LESSON_PRICE;
     if (amount > ownerBalance) {
       ioc.alertService.notify("Insufficient wallet balance");
       return;
