@@ -91,8 +91,11 @@ export const Content = ({
 
   const handleError = (error: Error) => {
     const message = getErrorMessage(error);
-    console.error({ message });
-    ioc.alertService.notify("An error acquired while transaction");
+    if (typeof message === 'string' && message.length <= 85) {
+      ioc.alertService.notify(message);
+    } else {
+      ioc.alertService.notify("An error acquired while transaction");
+    }
   };
 
   const totalUsdt = quantity * CC_LESSON_PRICE;

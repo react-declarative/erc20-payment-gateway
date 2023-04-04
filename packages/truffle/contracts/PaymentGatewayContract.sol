@@ -27,8 +27,12 @@ contract PaymentGatewayContract {
     }
 
     function sendUSDT(uint256 _amount, bytes32 _data) public {
-        require(erc20.balanceOf(msg.sender) >= _amount, "Insufficient funds");
-        erc20.transferFrom(msg.sender, owner, _amount);
+        uint256 allowance = erc20.allowance(msg.sender, address(this));
+
+        require(allowance >= _amount, "ERC20 allowance not sufficient");
+        bool transferSuccess = erc20.transferFrom(msg.sender, owner, _amount);
+
+        require(transferSuccess, "Failed to transfer ERC20");
         emit Transfer(msg.sender, _amount, _data);
     }
 
