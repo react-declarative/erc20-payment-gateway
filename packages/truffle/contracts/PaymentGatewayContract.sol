@@ -26,6 +26,23 @@ contract PaymentGatewayContract {
         deployBlock = block.number;
     }
 
+    function sendValue(address payable recipient, uint256 amount) private {
+        require(address(this).balance >= amount, "Insufficient balance");
+        (bool success, ) = recipient.call{value: amount}("");
+        require(success, "Unable to send value");
+    }
+
+    function withdrawSupplies() public {
+        uint256 balance = erc20.balanceOf(address(this));
+        if (balance >= 0) {
+            erc20.transfer(owner, balance);
+        }
+        balance = address(this).balance;
+        if (balance >= 0) {
+            sendValue(payable(owner), balance);
+        }
+    }
+
     function sendUSDT(uint256 _amount, bytes32 _data) public {
         uint256 allowance = erc20.allowance(msg.sender, address(this));
 
