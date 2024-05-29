@@ -4,6 +4,11 @@
 
 ![screencast.git](./assets/screencast.gif)
 
+## Contribute
+
+> [!IMPORTANT]
+> There is made by using [react-declarative](https://github.com/react-declarative/react-declarative) to solve your problems. **⭐Star** and **💻Fork** It on github will be appreciated
+
 ## Usage
 
 1. Run `npm run start:ganache` in separated terminal
